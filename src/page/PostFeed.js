@@ -62,6 +62,23 @@ const PostFeed = () => {
         }
     };
 
+    const highlightHashtags = (text) => {
+        return text.split(/(\s+)/).map((word, index) =>
+            word.startsWith("#") ? (
+                <span
+                    key={index}
+                    className="hashtag"
+                    onClick={() => navigate(`/search/${word.substring(1)}`)} // ✅ 클릭 시 이동
+                >
+                {word}
+            </span>
+            ) : (
+                word
+            )
+        );
+    };
+
+
     if (!user) {
         return <p>로딩 중...</p>;
     }
@@ -93,11 +110,11 @@ const PostFeed = () => {
                     return (
                         <li key={post.id} className="post-item">
                             <div className="post-header">
-                                <PostAuthor author={post.author} /> {/* ✅ 변경된 부분 */}
+                                <PostAuthor author={post.author}/> {/* ✅ 변경된 부분 */}
                                 <p className="post-date">{formattedDate}</p>
                             </div>
                             <h4>{post.title}</h4>
-                            <p>{post.content}</p>
+                            <p>{highlightHashtags(post.content)}</p>
                             <div className="post-actions">
                                 <img
                                     src={"/like_icon.png"}

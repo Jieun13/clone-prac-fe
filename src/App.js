@@ -6,6 +6,7 @@ import Login from "./page/Login";
 import NevigateBar from "./component/NevigateBar";
 import PostFeed from "./page/PostFeed";
 import Profile from "./page/Profile";
+import SearchResults from "./page/SearchResults";
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                 <Route path="/loginSuccess" element={<LoginSuccess />} />
                 <Route path="/feed" element={<PostFeed />} />
                 <Route path="/profile/:userId" element={<Profile />} /> {/* ✅ 추가 */}
+                <Route path="/search/:hashtag" element={<SearchResults />} />
             </Routes>
         </Router>
     );
