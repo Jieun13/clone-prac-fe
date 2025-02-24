@@ -71,8 +71,18 @@ h1 {
     transition: 0.3s ease-in-out;
 }
 
+.repost-label {
+    display: block;
+    padding: 5px;
+    font-weight: bold;
+}
+
 .post-item:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.post-details {
+    cursor: pointer;
 }
 
 /* 🔹 포스트 헤더 한 줄 정렬 */
@@ -158,6 +168,12 @@ h1 {
 .action-icon:hover {
     color: #222222;
     background-color: grey;
+}
+
+.nickname-change {
+    background-color: white;
+    color: black;
+    border: 1px solid gray;
 }
 
 /* 🔹 반응형 스타일 */

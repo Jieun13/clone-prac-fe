@@ -5,7 +5,7 @@ import axios from "axios";
 import { format } from "date-fns";
 import LikeButton from "../component/LikeButton";
 import RepostButton from "../component/RepostButton";
-import PostAuthor from "../component/PostAuthor"; // ✅ 추가
+import PostAuthor from "../component/PostAuthor";
 import "./PostFeed.css";
 
 const PostFeed = () => {
@@ -29,7 +29,17 @@ const PostFeed = () => {
             setUser(userResponse.data);
 
             const feedData = await getUserFeed(token);
-            setPosts(feedData);
+
+            const repostResponse = await axios.get("http://localhost:8080/api/users/reposts", {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            const reposts = repostResponse.data.map(repost => ({
+                ...repost.post,
+                isRepost: true
+            }));
+
+            setPosts([...feedData, ...reposts]);
         } catch (error) {
             console.error("인증 오류:", error);
             localStorage.removeItem("access_token");
@@ -39,7 +49,7 @@ const PostFeed = () => {
 
     useEffect(() => {
         fetchPosts();
-    }, [navigate]);
+    }, []);
 
     const handlePostSubmit = async () => {
         if (!title.trim() || !content.trim()) {
@@ -68,7 +78,7 @@ const PostFeed = () => {
                 <span
                     key={index}
                     className="hashtag"
-                    onClick={() => navigate(`/search/${word.substring(1)}`)} // ✅ 클릭 시 이동
+                    onClick={() => navigate(`/search/${word.substring(1)}`)}
                 >
                 {word}
             </span>
@@ -77,7 +87,6 @@ const PostFeed = () => {
             )
         );
     };
-
 
     if (!user) {
         return <p>로딩 중...</p>;
@@ -104,30 +113,26 @@ const PostFeed = () => {
 
             <ul className="post-list">
                 {posts.map(post => {
-                    // 날짜 변환 (UTC -> 로컬 타임존 반영)
                     const formattedDate = format(new Date(post.createdAt), "yyyy-MM-dd h:mm aaa");
 
                     return (
-                        <li key={post.id} className="post-item">
+                        <li>
+                            <div className="post-item">
+                                {post.isRepost && <p className="repost-label">🔁 {user.nickname}님이 리포스트함</p>}
                             <div className="post-header">
-                                <PostAuthor author={post.author}/> {/* ✅ 변경된 부분 */}
+                                <PostAuthor author={post.author}/>
                                 <p className="post-date">{formattedDate}</p>
                             </div>
-                            <h4>{post.title}</h4>
-                            <p>{highlightHashtags(post.content)}</p>
+                            <div key={post.id}
+                                 className="post-details"
+                                 onClick={() => navigate(`/posts/${post.id}`)}>
+                                <h4>{post.title}</h4>
+                                <p>{highlightHashtags(post.content)}</p>
+                            </div>
                             <div className="post-actions">
-                                <img
-                                    src={"/like_icon.png"}
-                                    alt="Like"
-                                    className="action-icon"
-                                    onClick={() => LikeButton(post.id)}
-                                />
-                                <img
-                                    src={"/repost_icon.png"}
-                                    alt="Comment"
-                                    className="action-icon"
-                                    onClick={() => RepostButton(post.id)}
-                                />
+                                <RepostButton postId={post.id}/>
+                                <LikeButton postId={post.id}/>
+                            </div>
                             </div>
                         </li>
                     );

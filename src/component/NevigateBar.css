@@ -16,6 +16,18 @@
     color: black;
 }
 
+.profile-link {
+    text-decoration: none;
+    color: black;
+    padding: 8px 15px;
+}
+
+.my-link{
+    text-decoration: none;
+    color: black;
+    padding: 8px 15px;
+}
+
 .home-link:hover {
     text-decoration: underline;
 }

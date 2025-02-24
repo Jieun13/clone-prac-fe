@@ -38,12 +38,50 @@ p {
     color: #555;
 }
 
+.follow {
+    background-color: #222222;
+    color: white;
+}
+
+.follow:hover {
+    background-color: #333333;
+    color: white;
+}
+
+.unfollow {
+    background-color: gray;
+    color: white;
+}
+
+.unfollow:hover {
+    background-color: #333333;
+    color: white;
+}
+
+.cancel-button{
+    color: white;
+    background-color: grey;
+}
+
+.cancel-button:hover{
+    background-color: #333333;
+}
+
+.save-button {
+    color: white;
+    background-color: #555555;
+}
+
+.save-button:hover{
+    background-color: #333333;
+}
+
 .profile-email {
     color: #555;
 }
 
 . button {
-    background-color: #222222;
+    background-color: #555555;
     border: none;
     border-radius: 20px;
     color: white;

@@ -1,0 +1,107 @@
+.post-detail-container {
+    max-width: 600px;
+    background: #fff;
+    position: relative;
+    padding: 15px;
+    margin: 20px auto 20px;
+    border: 0.5px solid lightgray;
+    border-radius: 5px;
+    transition: 0.3s ease-in-out;
+}
+
+.post-input {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.post-input input,
+.post-input textarea {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.post-input textarea {
+    resize: none;
+    width: 95%;
+    height: 80px;
+}
+
+/* 버튼 컨테이너 */
+.post-buttons {
+    display: flex;
+    justify-content: space-between;  /* ✅ 버튼을 좌우 배치 */
+    width: 100%;
+}
+
+/* 저장 버튼 */
+.save-button {
+    width: 15%;
+    background-color: #282c34;
+    color: white;
+    padding: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px !important;
+}
+
+/* 취소 버튼 */
+.cancel-button {
+    width: 15%;
+    padding: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px !important;
+    background-color: #aaaaaa !important;
+}
+
+.menu-container {
+    position: relative;
+    background: #fff;
+    transition: 0.3s ease-in-out;
+}
+
+.menu-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: black;
+}
+
+.menu-button:hover {
+    background: none;
+}
+
+.menu-dropdown {
+    position: absolute;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* ✅ 내부 텍스트 가운데 정렬 */
+    justify-content: center;
+    padding: 5px 0; /* 위아래 간격 조정 */
+}
+
+.menu-dropdown button {
+    width: 100%;  /* ✅ 버튼을 드롭다운 너비에 맞게 설정 */
+    padding: 6px 5px;
+    margin: 3px 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: black;
+    text-align: center;  /* ✅ 텍스트를 가운데 정렬 */
+}
+
+.menu-dropdown button:hover {
+    background: #f0f0f0;
+}

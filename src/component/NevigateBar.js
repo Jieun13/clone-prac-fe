@@ -24,11 +24,12 @@ const Navbar = () => {
     return (
         <div className="navbar">
             <div className="navbar-left">
-                <Link to="/" className="home-link">
+                <Link to="/feed" className="home-link">
                     <strong>Home</strong>
                 </Link>
             </div>
             <div className="navbar-right">
+                <Link to="/" className="my-link">My</Link>
                 {isLoggedIn ? (
                     <button className="logout" onClick={handleLogout}>
                         로그아웃

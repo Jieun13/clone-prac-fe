@@ -7,11 +7,11 @@ const PostAuthor = ({ author }) => {
         <div
             className="post-author"
             onClick={() => navigate(`/profile/${author.id}`)}
-            style={{ cursor: "pointer" }} // 마우스를 올리면 클릭 가능한 것처럼 보이게
+            style={{cursor: "pointer"}} // 마우스를 올리면 클릭 가능한 것처럼 보이게
         >
             <img src={"/profile_icon.png"} alt="profile" className="profile-img-feed"/>
             <h3 className="nickname">{author.nickname}</h3>
-            <p className="username">@{author.username}</p>
+            <p className="username">@{author.email.split('@')[0]}</p>
         </div>
     );
 };

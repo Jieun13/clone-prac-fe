@@ -50,28 +50,14 @@ const SearchResults = () => {
                         <div className="search-header">
                             <div className="search-author">
                                 <PostAuthor author={post.author}/>
-                                <div>
-                                    <p className="nickname">{post.nickname}</p>
-                                    <p className="username">@{post.username}</p>
-                                </div>
                             </div>
                             <p className="search-date">{post.date}</p>
                         </div>
                         <h4>{post.title}</h4>
                         <p>{highlightHashtags(post.content)}</p>
                         <div className="post-actions">
-                            <img
-                                src={"/like_icon.png"}
-                                alt="Like"
-                                className="action-icon"
-                                onClick={() => LikeButton(post.id)}
-                            />
-                            <img
-                                src={"/repost_icon.png"}
-                                alt="Comment"
-                                className="action-icon"
-                                onClick={() => RepostButton(post.id)}
-                            />
+                            <RepostButton postId={post.id}/>
+                            <LikeButton postId={post.id}/>
                         </div>
                     </li>
                 ))}

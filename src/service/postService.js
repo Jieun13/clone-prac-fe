@@ -58,7 +58,7 @@ export const getUserFeed = async (token) => {
  */
 export const getPostsByAuthor = async (authorId) => {
     try {
-        const response = await axios.get(`${API_BASE_URL}/${authorId}`);
+        const response = await axios.get(`${API_BASE_URL}/user/${authorId}`);
         return response.data;
     } catch (error) {
         console.error("사용자 포스트 조회 오류:", error);
