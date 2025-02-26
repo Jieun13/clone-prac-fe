@@ -46,7 +46,8 @@ const SearchResults = () => {
             <h2 className="search-title">🔍 #{hashtag} 검색 결과</h2>
             <ul className="search-results">
                 {posts.map((post) => (
-                    <li key={post.id} className="search-item">
+                    <li key={post.id} className="search-item"
+                        onClick={() => navigate(`/posts/${post.id}`)} >
                         <div className="search-header">
                             <div className="search-author">
                                 <PostAuthor author={post.author}/>

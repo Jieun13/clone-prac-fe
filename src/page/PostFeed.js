@@ -47,6 +47,25 @@ const PostFeed = () => {
         }
     };
 
+    const highlightHashtags = (text) => {
+        return text.split(/(\s+)/).map((word, index) =>
+            word.startsWith("#") ? (
+                <span
+                    key={index}
+                    className="hashtag"
+                    onClick={(e) => {
+                        e.stopPropagation(); // 이벤트 버블링 중단
+                        navigate(`/search/${word.substring(1)}`);
+                    }}
+                >
+                {word}
+            </span>
+            ) : (
+                word
+            )
+        );
+    };
+
     useEffect(() => {
         fetchPosts();
     }, []);
@@ -70,22 +89,6 @@ const PostFeed = () => {
         } catch (error) {
             console.error("포스트 작성 오류:", error);
         }
-    };
-
-    const highlightHashtags = (text) => {
-        return text.split(/(\s+)/).map((word, index) =>
-            word.startsWith("#") ? (
-                <span
-                    key={index}
-                    className="hashtag"
-                    onClick={() => navigate(`/search/${word.substring(1)}`)}
-                >
-                {word}
-            </span>
-            ) : (
-                word
-            )
-        );
     };
 
     if (!user) {

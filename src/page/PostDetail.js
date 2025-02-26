@@ -110,7 +110,10 @@ const PostDetail = () => {
                 <span
                     key={index}
                     className="hashtag"
-                    onClick={() => navigate(`/search/${word.substring(1)}`)}
+                    onClick={(e) => {
+                        e.stopPropagation(); // 이벤트 버블링 중단
+                        navigate(`/search/${word.substring(1)}`);
+                    }}
                 >
                 {word}
             </span>
