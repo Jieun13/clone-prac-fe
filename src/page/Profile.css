@@ -76,6 +76,16 @@ p {
     background-color: #333333;
 }
 
+.update-button {
+    color: white;
+    background-color: #555555;
+}
+
+.update-button:hover{
+    background-color: #333333;
+    color: white;
+}
+
 .profile-email {
     color: #555;
 }

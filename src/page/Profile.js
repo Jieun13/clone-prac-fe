@@ -163,7 +163,7 @@ const Profile = () => {
                         <button className="save-button" onClick={handleNicknameChange}>저장</button>
                     </>
                 ) : (
-                    <button className="save-button" onClick={() => setIsEditing(true)}>닉네임 변경</button>
+                    <button className="update-button" onClick={() => setIsEditing(true)}>닉네임 변경</button>
                 )
             )}
 
