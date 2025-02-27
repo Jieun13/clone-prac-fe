@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import LikeButton from "../component/LikeButton";
 import RepostButton from "../component/RepostButton";
 import PostAuthor from "../component/PostAuthor";
+import commentService from "../service/commentService";
 import "./PostFeed.css";
 
 const PostFeed = () => {
@@ -40,6 +41,22 @@ const PostFeed = () => {
             }));
 
             setPosts([...feedData, ...reposts]);
+            const mergedPosts = [...feedData, ...reposts];
+
+            const postsWithComments = await Promise.all(
+                mergedPosts.map(async (post) => {
+                    try {
+                        const comments = await commentService.getCommentsByPost(post.id, token);
+                        return { ...post, commentCount: comments.length };
+                    } catch (error) {
+                        console.error(`댓글 조회 오류 (postId: ${post.id}):`, error);
+                        return { ...post, commentCount: 0 };
+                    }
+                })
+            );
+
+            setPosts(postsWithComments);
+
         } catch (error) {
             console.error("인증 오류:", error);
             localStorage.removeItem("access_token");
@@ -132,10 +149,17 @@ const PostFeed = () => {
                                 <h4>{post.title}</h4>
                                 <p>{highlightHashtags(post.content)}</p>
                             </div>
-                            <div className="post-actions">
-                                <RepostButton postId={post.id}/>
-                                <LikeButton postId={post.id}/>
-                            </div>
+                                <div className="post-actions">
+                                    <span className="comment-container">
+                                        <img
+                                            src={"/comment_icon.png"}
+                                            alt="comment"
+                                            className="comment_icon"
+                                            style={{cursor: "pointer"}}
+                                        />{post.commentCount}</span>
+                                    <RepostButton postId={post.id}/>
+                                    <LikeButton postId={post.id}/>
+                                </div>
                             </div>
                         </li>
                     );

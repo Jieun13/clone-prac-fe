@@ -29,6 +29,7 @@ const Navbar = () => {
                 </Link>
             </div>
             <div className="navbar-right">
+                <Link to="/search" className="my-link">사용자 검색 🔍</Link>
                 <Link to="/" className="my-link">My</Link>
                 {isLoggedIn ? (
                     <button className="logout" onClick={handleLogout}>

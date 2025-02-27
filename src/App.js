@@ -8,6 +8,7 @@ import PostFeed from "./page/PostFeed";
 import Profile from "./page/Profile";
 import SearchResults from "./page/SearchResults";
 import PostDetail from "./page/PostDetail";
+import UserSearch from "./page/UserSearch";
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                 <Route path="/profile/:userId" element={<Profile />} /> {/* ✅ 추가 */}
                 <Route path="/search/:hashtag" element={<SearchResults />} />
                 <Route path="/posts/:postId" element={<PostDetail />} />
+                <Route path="/search" element={<UserSearch />} />
             </Routes>
         </Router>
     );

@@ -21,7 +21,7 @@ const PostDetail = () => {
     const token = localStorage.getItem("access_token"); // 로컬 스토리지에서 토큰 가져오기
     const [editingComment, setEditingComment] = useState(null);
     const [editedComment, setEditedComment] = useState("");
-
+    const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
         fetchPost();
@@ -45,7 +45,6 @@ const PostDetail = () => {
         try {
             const data = await commentService.getCommentsByPost(postId, token);
             setComments(data);
-            console.log(data);
         } catch (error) {
             console.error("댓글 불러오기 오류:", error);
         }
@@ -121,6 +120,23 @@ const PostDetail = () => {
                 word
             )
         );
+    };
+
+    useEffect(() => {
+        fetchPost();
+        fetchComments();
+        fetchCurrentUser(); // 로그인한 유저 정보 가져오기
+    }, [postId]);
+
+    const fetchCurrentUser = async () => {
+        try {
+            const response = await axios.get("http://localhost:8080/api/profile", {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setCurrentUser(response.data);
+        } catch (error) {
+            console.error("현재 유저 정보 불러오기 오류:", error);
+        }
     };
 
     if (!post) return <p>로딩 중...</p>;
@@ -203,24 +219,36 @@ const PostDetail = () => {
                                         <PostAuthor author={comment.author}/>
                                         <p className="post-date">{format(new Date(comment.createdAt), "yyyy-MM-dd hh:mm")} 작성됨</p>
                                     </div>
-                                    <div className="post-details">
-                                        <p>{highlightHashtags(comment.content)}</p>
-                                    </div>
-                                    <div className="post-actions">
-                                        <button className="delete-comment-button"
-                                                onClick={() => handleDeleteComment(comment.id)}>삭제
-                                        </button>
+
+                                    <div style={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        alignItems: "center"
+                                    }}>
+                                        <div className="post-details">
+                                            <p>{highlightHashtags(comment.content)}</p>
+                                        </div>
+                                        {currentUser?.id === comment.author.id && (
+                                            <button className="delete-comment-button"
+                                                    onClick={() => handleDeleteComment(comment.id)}>
+                                                삭제
+                                            </button>
+                                        )}
                                     </div>
                                 </>
                             )}
                         </li>
                     ))}
                 </ul>
-            <div className="comment-input">
-                <input
-                    type="text"
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
+                <div className="post-input" style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center"
+                }}>
+                    <input
+                        type="text"
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
                     placeholder=" 댓글을 입력하세요"
                     />
                     <button onClick={handleCreateComment} className="save-button">작성</button>

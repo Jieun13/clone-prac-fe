@@ -5,7 +5,7 @@ const API_URL = "http://localhost:8080/api/users";
 const followService = {
     getUser: async (userId, token) => {
         try {
-            const response = await axios.get(`${API_URL}/${userId}`, {}, {
+            const response = await axios.get(`${API_URL}/${userId}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             return response.data;
@@ -17,7 +17,7 @@ const followService = {
 
     checkFollowing: async (userId, currentUserId, token) => {
         try {
-            const response = await axios.get(`${API_URL}/${userId}/followers`, {}, {
+            const response = await axios.get(`${API_URL}/${userId}/followers`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const followers = response.data;
@@ -30,12 +30,9 @@ const followService = {
 
     followUser: async (userId, token) => {
         try {
-            console.log("🔍 팔로우 대상 userId:", userId);
-
             await axios.post(`${API_URL}/${userId}/follow`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            console.log("✅ 팔로우 성공");
         } catch (error) {
             console.error("❌ 팔로우 요청 실패:", error.response?.data || error.message);
         }
@@ -43,14 +40,37 @@ const followService = {
 
     unfollowUser: async (userId, token) => {
         try {
-            console.log("🔍 팔로우 대상 userId:", userId);
-
-            await axios.delete(`${API_URL}/${userId}/follow`, {}, {
+            await axios.delete(`${API_URL}/${userId}/follow`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            console.log("✅ 언팔로우 성공");
         } catch (error) {
             console.error("❌ 언팔로우 요청 실패:", error.response?.data || error.message);
+        }
+    },
+
+    // 🔹 팔로워 수 가져오기
+    getFollowersCount: async (userId, token) => {
+        try {
+            const response = await axios.get(`${API_URL}/${userId}/followers`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            return response.data.length;
+        } catch (error) {
+            console.error("❌ 팔로워 수 불러오기 실패:", error);
+            return 0;
+        }
+    },
+
+    // 🔹 팔로잉 수 가져오기
+    getFollowingsCount: async (userId, token) => {
+        try {
+            const response = await axios.get(`${API_URL}/${userId}/followings`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            return response.data.length;
+        } catch (error) {
+            console.error("❌ 팔로잉 수 불러오기 실패:", error);
+            return 0;
         }
     }
 };

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import followService from '../service/followService';
 import './Home.css';
 
 const Home = () => {
@@ -8,28 +9,40 @@ const Home = () => {
     const [newNickname, setNewNickname] = useState("");
     const [isEditing, setIsEditing] = useState(false);
     const navigate = useNavigate();
+    const [followersCount, setFollowersCount] = useState(0);
+    const [followingsCount, setFollowingsCount] = useState(0);
 
     useEffect(() => {
-        const token = localStorage.getItem('access_token');
+        const fetchUserData = async () => {
+            const token = localStorage.getItem('access_token');
 
-        if (!token) {
-            navigate('/login');
-            return;
-        }
+            if (!token) {
+                navigate('/login');
+                return;
+            }
 
-        axios.get('http://localhost:8080/api/profile', {
-            headers: { Authorization: `Bearer ${token}` }
-        })
-            .then(response => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/profile', {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+
                 setUser(response.data);
-                setNewNickname(response.data.nickname); // 초기값 설정
-            })
-            .catch(error => {
-                console.error('인증 오류:', error);
+                setNewNickname(response.data.nickname);
+
+                // 🔹 팔로워/팔로잉 수 가져오기
+                const followers = await followService.getFollowersCount(response.data.id, token);
+                const followings = await followService.getFollowingsCount(response.data.id, token);
+                setFollowersCount(followers);
+                setFollowingsCount(followings);
+
+            } catch (error) {
+                console.error('❌ 인증 오류:', error);
                 localStorage.removeItem('access_token');
                 navigate('/login');
-            });
+            }
+        };
 
+        fetchUserData();
     }, [navigate]);
 
     const handleNicknameChange = async () => {
@@ -47,8 +60,9 @@ const Home = () => {
 
             setUser((prevUser) => ({ ...prevUser, nickname: newNickname }));
             setIsEditing(false);
+
         } catch (error) {
-            console.error("닉네임 변경 오류:", error);
+            console.error("❌ 닉네임 변경 오류:", error);
             alert("닉네임 변경에 실패했습니다.");
         }
     };
@@ -85,7 +99,7 @@ const Home = () => {
                                         padding: "5px",
                                         marginRight: "5px",
                                         verticalAlign: "middle",
-                                        lineHeight: "1.2em"  // h2와 높이 맞추기
+                                        lineHeight: "1.2em"
                                     }}
                                 />
                             ) : (
@@ -109,6 +123,12 @@ const Home = () => {
                 ) : (
                     <p>로딩 중...</p>
                 )}
+                <div className="box-mini">
+                    <div className="info-follow">
+                        <p><strong>팔로워</strong> {followersCount}</p>
+                        <p><strong>팔로잉</strong> {followingsCount}</p>
+                    </div>
+                </div>
             </div>
         </div>
     );
