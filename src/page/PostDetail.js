@@ -181,7 +181,10 @@ const PostDetail = () => {
                             <RepostButton postId={post.id}/>
                             <LikeButton postId={post.id}/>
                             <div className="menu-container">
-                                <button className="menu-button" onClick={() => setIsMenuOpen(!isMenuOpen)}>⋮</button>
+                                { currentUser?.id === post.author.id && (
+                                    <button className="menu-button"
+                                            onClick={() => setIsMenuOpen(!isMenuOpen)}>⋮</button>
+                                )}
                                 {isMenuOpen && (
                                     <div className="menu-dropdown">
                                         <button onClick={handleEdit}>수정</button>
